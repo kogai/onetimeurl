@@ -1,10 +1,10 @@
 [@bs.module "body-parser"]
 external bodyParserJson : unit => Express.Middleware.t = "json";
 
-let tap2 = (f, x, y) => {
-  f(x, y);
-  x;
-};
+[@bs.module]
+external serveStatic :
+  (string, {. "index": array(string)}) => Express.Middleware.t =
+  "serve-static";
 
 let use = (a, m) => {
   Express.App.use(a, m);
@@ -16,12 +16,16 @@ let useOnPath = (a, m, ~path) => {
   a;
 };
 
-let schema = GraphQL.Utilities.buildSchema("type Query { hello: String }");
+let schema =
+  GraphQL.Utilities.buildSchema(
+    Node.Fs.readFileSync("./src/schema.graphql", `utf8),
+  );
 
-let rootValue = {"hello": () => "world"};
+let rootValue = {"hello": () => "world!!!"};
 
 Express.App.make()
 |> use(_, bodyParserJson())
+|> use(_, serveStatic("./public", {"index": [|"index.html"|]}))
 |> useOnPath(
      _,
      ~path="/graphql",
