@@ -25,6 +25,7 @@ lib/bs
 .merlin
 .bsb.lock
 node_modules/
+public/bundle.js
 *.bs.js
 *.log
 .cache/

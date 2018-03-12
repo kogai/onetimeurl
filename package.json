@@ -5,7 +5,7 @@
     "clean": "bsb -clean-world",
     "build": "yarn build:server && yarn build:client",
     "build:server": "bsb -make-world",
-    "build:client": "parcel build src/client.bs.js -d public/",
+    "build:client": "parcel build src/client.bs.js -d public/ -o bundle.js",
     "watch": "bsb -make-world -w",
     "start": "yarn build && node ./src/server.bs.js"
   },

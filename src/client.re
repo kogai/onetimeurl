@@ -1,1 +1,1 @@
-Js.log("Hello client!");
+ReactDOMRe.renderToElementWithId(<Root />, "root");
