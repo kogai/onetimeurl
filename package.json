@@ -4,7 +4,8 @@
   "scripts": {
     "clean": "bsb -clean-world",
     "build": "bsb -make-world",
-    "watch": "bsb -make-world -w"
+    "watch": "bsb -make-world -w",
+    "start": "yarn build && node ./src/app.bs.js"
   },
   "keywords": [
     "BuckleScript"
@@ -13,5 +14,9 @@
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "^2.2.2"
+  },
+  "dependencies": {
+    "bs-express": "^0.4.1",
+    "express": "^4.16.2"
   }
 }
