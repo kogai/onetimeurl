@@ -1,8 +1,17 @@
 version: '3'
 services:
-  web:
+  app:
     build: .
     ports:
       - '3000:3000'
-  redis:
-    image: 'redis:alpine'
+    links:
+      - database
+    volumes:
+      - '.:/app/'
+      - /app/node_modules
+  data:
+    image: busybox
+    volumes:
+      - /app/node_modules
+  database:
+    image: 'postgres:alpine'
