@@ -29,3 +29,6 @@ public/bundle.js
 *.bs.js
 *.log
 .cache/
+jspm_packages
+.serverless
+.envrc

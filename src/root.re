@@ -14,7 +14,7 @@ let make = _children => {
                 |> range
                 |> List.rev
                 |> List.map(x => {Cell.x, y, status: Cell.Death})
-              )
+
          ),
      },
      reducer: (a, s) =>
