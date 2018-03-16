@@ -1,6 +1,7 @@
 FROM node:alpine
 
-ADD . /app
+COPY ./package.json /app
+
 WORKDIR /app
 
 RUN apk upgrade --update \
@@ -13,5 +14,7 @@ RUN apk upgrade --update \
   gcc \
   python \
   && yarn
+
+ADD . /app
 
 CMD [ "yarn", "start" ]
