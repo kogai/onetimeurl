@@ -8,6 +8,8 @@
     "build:client": "parcel build src/client.bs.js -d public/ -o bundle.js",
     "build:container": "docker-compose build",
     "watch": "bsb -make-world -w",
+    "psql": "docker-compose exec db psql",
+    "psql:login": "yarn psql onetimeurl -U postgres",
     "start": "yarn build && docker-compose up"
   },
   "keywords": [

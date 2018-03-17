@@ -5,12 +5,20 @@ services:
     ports:
       - '3000:3000'
     links:
-      - database
+      - db
     volumes:
       - '.:/app/'
   data:
     image: busybox
     volumes:
       - /app/node_modules
-  database:
+  db:
     image: 'postgres:alpine'
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: '${POSTGRESS_PASSWORD}'
+      POSTGRES_DB: onetimeurl
+    ports:
+      - '5432:5432'
+    volumes:
+      - './init.sql:/docker-entrypoint-init.d/init.sql'
