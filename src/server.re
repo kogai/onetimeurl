@@ -1,24 +1,8 @@
-[@bs.module "body-parser"]
-external bodyParserJson : unit => Express.Middleware.t = "json";
-
-[@bs.module]
-external serveStatic :
-  (string, {. "index": array(string)}) => Express.Middleware.t =
-  "serve-static";
-
-let use = (a, m) => {
-  Express.App.use(a, m);
-  a;
-};
-
-let useOnPath = (a, m, ~path) => {
-  Express.App.useOnPath(a, m, ~path);
-  a;
-};
-
 let client = Pg.client();
 
 let conn = Pg.connect(client);
+
+let con = Lwt.(Pg.client() |> return |> bind(_, _client => return(0)));
 
 let schema =
   GraphQL.Utilities.buildSchema(
@@ -28,21 +12,21 @@ let schema =
 let rootValue = {"hello": () => "world!!!"};
 
 Express.App.make()
-|> use(_, bodyParserJson())
-|> use(_, serveStatic("./public", {"index": [|"index.html"|]}))
-|> useOnPath(
+|> Utils.use(_, BodyParser.json())
+|> Utils.use(
+     _,
+     ServerStatic.default("./public", {"index": [|"index.html"|]}),
+   )
+|> Utils.useOnPath(
      _,
      ~path="/graphql",
      ApolloServerExpress.createGraphQLExpressMiddleware(schema, ~rootValue),
    )
-|> useOnPath(
+|> Utils.useOnPath(
      _,
      ~path="/graphiql",
      ApolloServerExpress.createGraphiQLExpressMiddleware("/graphql"),
    )
-|> Express.App.listen(
-     ~port=3000,
-     ~onListen=(_) => Js.log2("Server start at", 3000),
-     _,
-     (),
+|> Express.App.listen(~port=3000, ~onListen=(_) =>
+     Js.log2("Server start at", 3000)
    );
