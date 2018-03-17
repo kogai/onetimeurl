@@ -8,7 +8,6 @@ services:
       - database
     volumes:
       - '.:/app/'
-      - /app/node_modules
   data:
     image: busybox
     volumes:

@@ -1,6 +1,6 @@
 FROM node:alpine
 
-COPY ./package.json /app
+COPY ./yarn.lock /app/yarn.lock
 
 WORKDIR /app
 
@@ -12,9 +12,10 @@ RUN apk upgrade --update \
   git \
   make \
   gcc \
-  python \
-  && yarn
+  python
+
+RUN yarn
 
 ADD . /app
 
-CMD [ "yarn", "start" ]
+CMD [ "node", "./src/server.bs.js" ]

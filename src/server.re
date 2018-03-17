@@ -1,8 +1,4 @@
-let client = Pg.client();
-
-let conn = Pg.connect(client);
-
-let con =
+let connect =
   Async.(
     Pg.client()
     |> return
