@@ -2,7 +2,14 @@ let client = Pg.client();
 
 let conn = Pg.connect(client);
 
-let con = Lwt.(Pg.client() |> return |> bind(_, _client => return(0)));
+let con =
+  Async.(
+    Pg.client()
+    |> return
+    >>= Pg.connect
+    >>= Pg.query(_, "select * from urls", [||])
+    >>= Pg.end_
+  );
 
 let schema =
   GraphQL.Utilities.buildSchema(
@@ -27,6 +34,4 @@ Express.App.make()
      ~path="/graphiql",
      ApolloServerExpress.createGraphiQLExpressMiddleware("/graphql"),
    )
-|> Express.App.listen(~port=3000, ~onListen=(_) =>
-     Js.log2("Server start at", 3000)
-   );
+|> Express.App.listen(~port=3000, ~onListen=(_) => Js.log("Start server on port 3000"));
