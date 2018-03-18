@@ -4,7 +4,7 @@ type config = {
   .
   "user": string,
   "host": string,
-  /* "database": string, */
+  "database": string,
   "password": string,
   "port": int,
 };

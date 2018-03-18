@@ -4,7 +4,7 @@ let connect =
       "user": "postgres",
       "password": "mysecretpassword",
       "host": "db",
-      /* "database": "onetimeurl", */
+      "database": "onetimeurl",
       "port": 5432,
     })
     |> return
@@ -14,10 +14,16 @@ let connect =
 
 Js.log(connect);
 
-let schema =
-  GraphQL.Utilities.buildSchema(
-    Node.Fs.readFileSync("./src/schema.graphql", `utf8),
-  );
+let resolvers = {
+  "Query": {
+    "hello": () => "Hellow world!"
+  }
+};
+
+let schema = GraphQLTools.makeExecutableSchema({
+  "resolvers": resolvers,
+  "typeDefs": Node.Fs.readFileSync("./src/schema.graphql", `utf8),
+});
 
 let rootValue = {"hello": () => "world!!!"};
 
@@ -28,7 +34,7 @@ let app =
     |>> ServerStatic.default("./public", {"index": [|"index.html"|]})
     |>>> (
       "/graphql",
-      ApolloServerExpress.createGraphQLExpressMiddleware(schema, ~rootValue),
+      ApolloServerExpress.createGraphQLExpressMiddleware(schema),
     )
     |>>> (
       "/graphiql",

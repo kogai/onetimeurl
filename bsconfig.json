@@ -19,6 +19,7 @@
   "bs-dependencies": [
     "bs-express",
     "bs-graphql",
+    "bs-graphql-tools",
     "bs-apollo-server-express",
     "reason-react"
   ],

@@ -28,8 +28,10 @@
     "bs-apollo-server-express": "^0.3.1",
     "bs-express": "^0.4.1",
     "bs-graphql": "^0.3.1",
+    "bs-graphql-tools": "^0.3.1",
     "express": "^4.16.2",
     "graphql": "^0.13.1",
+    "graphql-tools": "^2.23.1",
     "pg": "^7.4.1",
     "reason-react": "^0.3.4",
     "serve-static": "^1.13.2"
