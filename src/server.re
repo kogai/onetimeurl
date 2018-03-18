@@ -10,22 +10,34 @@ let connect =
     |> return
     >>= Pg.Pool.connect
     >>= Pg.Pool.query(_, "select * from urls", [||])
+    >>= (
+      (
+        x:
+          Pg.result(
+            {
+              .
+              "hash_val": string,
+              "raw_url": string,
+            },
+          ),
+      ) => {
+        Js.log(x);
+        return(x);
+      }
+    )
   );
-
-Js.log(connect);
 
 let resolvers = {
   "Query": {
-    "hello": () => "Hellow world!"
-  }
+    "hello": () => "Hellow world!",
+  },
 };
 
-let schema = GraphQLTools.makeExecutableSchema({
-  "resolvers": resolvers,
-  "typeDefs": Node.Fs.readFileSync("./src/schema.graphql", `utf8),
-});
-
-let rootValue = {"hello": () => "world!!!"};
+let schema =
+  GraphQLTools.makeExecutableSchema({
+    "resolvers": resolvers,
+    "typeDefs": Node.Fs.readFileSync("./src/schema.graphql", `utf8),
+  });
 
 let app =
   Utils.(

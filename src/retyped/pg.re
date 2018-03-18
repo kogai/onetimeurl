@@ -9,6 +9,24 @@ type config = {
   "port": int,
 };
 
+type field = {.
+  "name": string,
+  "tableID": int,
+  "columnID": int,
+  "dataTypeID": int,
+  "dataTypeSize": int,
+  "dataTypeModifier": int,
+  "format": string,
+};
+
+type result('a) = {.
+  "command": string,
+  "rowCount": int,
+  "oid": int,
+  "fields": array(field),
+  "rows": array('a)
+};
+
 module Base =
        (Impl: {type t; let make: config => t;})
        : (
@@ -16,7 +34,7 @@ module Base =
              type t;
              let make: config => t;
              let connect: t => Js.Promise.t(t);
-             let query: (t, string, array(string)) => Js.Promise.t('a);
+             let query: (t, string, array(string)) => Js.Promise.t(result('a));
              let end_: t => Js.Promise.t(unit);
            } with
              type t = Impl.t
@@ -25,7 +43,7 @@ module Base =
   let make = Impl.make;
   [@bs.send] external connect : t => Js.Promise.t('a) = "connect";
   [@bs.send]
-  external query : (t, string, array(string)) => Js.Promise.t('a) = "query";
+  external query : (t, string, array(string)) => Js.Promise.t(result('a)) = "query";
   [@bs.send] external end_ : t => Js.Promise.t(unit) = "end";
 };
 
