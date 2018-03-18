@@ -3,7 +3,11 @@ let use = (a, m) => {
   a;
 };
 
-let useOnPath = (a, m, ~path) => {
+let (|>>) = use;
+
+let useOnPath = (a, (path, m)) => {
   Express.App.useOnPath(a, m, ~path);
   a;
 };
+
+let (|>>>) = useOnPath;

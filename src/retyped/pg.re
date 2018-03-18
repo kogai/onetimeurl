@@ -1,6 +1,6 @@
-type t;
+type c;
 
-type db = {
+type config = {
   .
   "user": string,
   "host": string,
@@ -9,11 +9,38 @@ type db = {
   "port": int,
 };
 
-[@bs.module "pg"] [@bs.new] external client : db => t = "Client";
+module Base =
+       (Impl: {type t; let make: config => t;})
+       : (
+           {
+             type t;
+             let make: config => t;
+             let connect: t => Js.Promise.t(t);
+             let query: (t, string, array(string)) => Js.Promise.t('a);
+             let end_: t => Js.Promise.t(unit);
+           } with
+             type t = Impl.t
+         ) => {
+  type t = Impl.t;
+  let make = Impl.make;
+  [@bs.send] external connect : t => Js.Promise.t('a) = "connect";
+  [@bs.send]
+  external query : (t, string, array(string)) => Js.Promise.t('a) = "query";
+  [@bs.send] external end_ : t => Js.Promise.t(unit) = "end";
+};
 
-[@bs.send] external connect : t => Js.Promise.t('a) = "connect";
+module Pool =
+  Base(
+    {
+      type t;
+      [@bs.module "pg"] [@bs.new] external make : config => t = "Pool";
+    },
+  );
 
-[@bs.send]
-external query : (t, string, array(string)) => Js.Promise.t('a) = "query";
-
-[@bs.send] external end_ : t => Js.Promise.t(unit) = "end";
+module Client =
+  Base(
+    {
+      type t;
+      [@bs.module "pg"] [@bs.new] external make : config => t = "Client";
+    },
+  );
