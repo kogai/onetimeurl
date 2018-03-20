@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.6.0 (e4adfef)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cache
+  name: cache
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: cache
+    spec:
+      containers:
+      - image: busybox
+        name: cache
+        resources: {}
+        volumeMounts:
+        - mountPath: /app/node_modules
+          name: cache-claim0
+      restartPolicy: Always
+      volumes:
+      - name: cache-claim0
+        persistentVolumeClaim:
+          claimName: cache-claim0
+status: {}
