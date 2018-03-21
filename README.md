@@ -17,10 +17,14 @@ If you use `vscode`, Press `Windows + Shift + B` it will build automatically
 
 # Google container registry
 
-* docker build -t app .
-* docker tag app gcr.io/onetimeurl-198513/app:v1
+* docker build -t onetimeurl-198513/app:v1 .
+* docker tag onetimeurl-198513/app:v1 gcr.io/onetimeurl-198513/app:v1
 * gcloud docker -- push gcr.io/onetimeurl-198513/app:v1
 * kubectl run app --image=gcr.io/onetimeurl-198513/app:v1 --port 3000
+
+## Kompose
+
+* kompose convert -f docker-compose.yml
 
 ## Local registry
 
