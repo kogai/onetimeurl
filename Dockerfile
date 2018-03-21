@@ -1,9 +1,5 @@
 FROM node:alpine
 
-COPY ./yarn.lock /app/yarn.lock
-
-WORKDIR /app
-
 RUN apk upgrade --update \
   && apk add --virtual \
   build-dependencies \
@@ -14,8 +10,13 @@ RUN apk upgrade --update \
   gcc \
   python
 
-RUN yarn
+WORKDIR /app
+
+COPY ./yarn.lock /app/yarn.lock
 
 ADD . /app
 
-CMD [ "node", "./src/server.bs.js" ]
+RUN yarn
+RUN yarn build
+
+CMD [ "node", "./src/simple.bs.js" ]
