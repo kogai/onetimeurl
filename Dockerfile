@@ -12,11 +12,12 @@ RUN apk upgrade --update \
 
 WORKDIR /app
 
-COPY ./yarn.lock /app/yarn.lock
-
-ADD . /app
+COPY ./package.json ./bsconfig.json ./yarn.lock /app/
 
 RUN yarn
+
+COPY ./src /app/src
+
 RUN yarn build
 
 CMD [ "node", "./src/simple.bs.js" ]
