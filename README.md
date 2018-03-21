@@ -21,6 +21,7 @@ If you use `vscode`, Press `Windows + Shift + B` it will build automatically
 * docker tag onetimeurl-198513/app:v1 gcr.io/onetimeurl-198513/app:v1
 * gcloud docker -- push gcr.io/onetimeurl-198513/app:v1
 * kubectl run app --image=gcr.io/onetimeurl-198513/app:v1 --port 3000
+* kubectl delete deployment app
 
 ## Kompose
 
@@ -39,3 +40,11 @@ If you use `vscode`, Press `Windows + Shift + B` it will build automatically
 * kubectl get nodes
 * kubectl (get|describe|logs|exec)
 * export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+* kubectl --namespace=$NAMESPACE create secret docker-registry gcr \
+          --docker-server=https://gcr.io \
+          --docker-username=oauth2accesstoken \
+          --docker-password="$(gcloud auth print-access-token)" \
+          --docker-email="$(gcloud auth list --filter=status:ACTIVE --format='value(account)')"
+* $ kubectl --namespace=$NAMESPACE patch serviceaccount default \
+    -p '{"imagePullSecrets": [{"name": "gcr"}]}'
+* kubectl --namespace=$NAMESPACE delete secret gcr
