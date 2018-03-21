@@ -17,11 +17,15 @@ If you use `vscode`, Press `Windows + Shift + B` it will build automatically
 
 # Google container registry
 
+* eval $(minikube docker-env)
 * docker build -t onetimeurl-198513/app:v1 .
 * docker tag onetimeurl-198513/app:v1 gcr.io/onetimeurl-198513/app:v1
 * gcloud docker -- push gcr.io/onetimeurl-198513/app:v1
 * kubectl run app --image=gcr.io/onetimeurl-198513/app:v1 --port 3000
 * kubectl delete deployment app
+* kubectl expose deployment app --type=LoadBalancer
+* minikube service app
+* kubectl set image deployment/app app=app:v2
 
 ## Kompose
 
