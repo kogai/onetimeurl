@@ -20,7 +20,6 @@ If you use `vscode`, Press `Windows + Shift + B` it will build automatically
 * eval $(minikube docker-env)
 * docker build -t onetimeurl-198513/app:v1 .
 * docker tag onetimeurl-198513/app:v1 gcr.io/onetimeurl-198513/app:v1
-* gcloud docker -- push gcr.io/onetimeurl-198513/app:v1
 * kubectl run app --image=gcr.io/onetimeurl-198513/app:v1 --port 3000
 * kubectl delete deployment app
 * kubectl expose deployment app --type=LoadBalancer
@@ -52,3 +51,16 @@ If you use `vscode`, Press `Windows + Shift + B` it will build automatically
 * $ kubectl --namespace=$NAMESPACE patch serviceaccount default \
     -p '{"imagePullSecrets": [{"name": "gcr"}]}'
 * kubectl --namespace=$NAMESPACE delete secret gcr
+
+# Google Kubernetess Engine
+
+* gcloud config set project [PROJECT_ID]
+* gcloud config set compute/zone  asia-northeast1-a 
+* docker build -t gcr.io/${PROJECT_ID}/simple:v1 .
+* docker run --rm -p 3000:3000 gcr.io/${PROJECT_ID}/simple:v1
+* gcloud docker -- push gcr.io/${PROJECT_ID}/simple:v1
+* gcloud container clusters create simple-cluster --num-nodes=2
+* kubectl run app --image=gcr.io/${PROJECT_ID}/simple:v1 --port 3000
+* kubectl expose deployment app --type=LoadBalancer --port 80 --target-port 3000
+* gcloud container clusters delete simple-cluster
+
