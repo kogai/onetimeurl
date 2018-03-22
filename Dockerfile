@@ -20,4 +20,4 @@ COPY . /app
 
 RUN yarn build
 
-CMD [ "node", "./src/simple.bs.js" ]
+CMD [ "node", "./src/server.bs.js" ]

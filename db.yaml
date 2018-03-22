@@ -32,7 +32,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 1Gi
 status: {}
 
 ---
@@ -68,9 +68,9 @@ spec:
         ports:
         - containerPort: 5432
         resources: {}
-        volumeMounts:
-        - mountPath: /docker-entrypoint-initdb.d/init.sql
-          name: db-claim0
+        # volumeMounts:
+        # - mountPath: /docker-entrypoint-initdb.d/init.sql
+        #   name: db-claim0
       restartPolicy: Always
       volumes:
       - name: db-claim0

@@ -51,6 +51,7 @@ If you use `vscode`, Press `Windows + Shift + B` it will build automatically
 * $ kubectl --namespace=$NAMESPACE patch serviceaccount default \
     -p '{"imagePullSecrets": [{"name": "gcr"}]}'
 * kubectl --namespace=$NAMESPACE delete secret gcr
+* kubectl replace --force -f app.yaml
 
 # Google Kubernetess Engine
 
