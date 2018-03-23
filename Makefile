@@ -1,9 +1,11 @@
-PROJECT_ID := $(shell gcloud config get-value project -q)
+APP := $(shell gcloud config get-value project -q)
+VERSION := v1
+NAME := $(APP)/app:$(VERSION)
 
 .PHONY: app
 app:
-	docker build -t $(PROJECT_ID)/app:v1 .
-	docker tag $(PROJECT_ID)/app:v1 gcr.io/$(PROJECT_ID)/app:v1
+	docker build -t $(NAME) .
+	docker tag $(NAME) gcr.io/$(NAME)
 
 .PHONY: create
 create:
@@ -23,3 +25,7 @@ replace:
 	kubectl replace --force -f app.yaml
 	kubectl replace --force -f db.yaml
 	kubectl replace --force -f cache.yaml
+
+.PHONY: set
+set:
+	kubectl set image deployment/app app=$(NAME)

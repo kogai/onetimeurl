@@ -17,7 +17,7 @@ Async.(
     conn => {
       let resolvers = {
         "Query": {
-          "hello": () => "Hellow world!",
+          "hello": () => "Hellow world...!",
         },
       };
       let schema =

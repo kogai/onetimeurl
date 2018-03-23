@@ -1,7 +1,6 @@
 version: '3'
 services:
   app:
-    image: 'gcr.io/${PROJECT_ID}/simple:v1'
     build: .
     ports:
       - '3000:3000'
@@ -14,12 +13,10 @@ services:
     volumes:
       - /app/node_modules
   db:
-    image: 'postgres:alpine'
+    build: ./db
     restart: always
     environment:
       POSTGRES_PASSWORD: '${POSTGRESS_PASSWORD}'
       POSTGRES_DB: onetimeurl
     ports:
       - '5432:5432'
-    volumes:
-      - './init.sql:/docker-entrypoint-initdb.d/init.sql'

@@ -46,7 +46,7 @@ spec:
         io.kompose.service: app
     spec:
       containers:
-      - image: gcr.io/onetimeurl-198513/app:v1
+      - image: onetimeurl-198513/app:v1
         name: app
         ports:
         - containerPort: 3000
