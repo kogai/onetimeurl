@@ -37,5 +37,5 @@ let make = _children => {
          })
        }, */
   render: _self =>
-    <div> (ReasonReact.stringToElement("Hello, world.")) </div>,
+    <div> (ReasonReact.stringToElement("Hello, world...")) </div>,
 };

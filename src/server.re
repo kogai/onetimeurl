@@ -17,7 +17,7 @@ Async.(
     conn => {
       let resolvers = {
         "Query": {
-          "hello": () => "Hellow world...!",
+          "hello": () => "Hellow world!",
         },
       };
       let schema =
@@ -39,26 +39,34 @@ Async.(
         )
         |>>> (
           "/:path",
-          Express.Middleware.from((_next, req, res) => {
-            let result = Json.Encode.(object_([("status", int(200))]));
-            let params = Express.Request.params(req);
-            let path = Js.Dict.get(params, "path");
-            /* Js.Option.default */
-            Js.log(params);
-            Js.log(path);
-            /* V            switch (getDictString(Request.params(req), "id")) {
-                           | Some("123") => Response.sendJson(makeSuccessJson(), res)
-               | _ => next(Next.route, res) */
-            /* >>= Pg.Pool.query(_, "select * from urls", [||]) */
-            /* >>= (
-                    (x: Pg.result(url)) => {
-                      Js.log(x);
-                      ret
-               urn( x);
-                 }
-                  ) */
-            Express.Response.sendJson(result, res);
-          }),
+          Express.Middleware.from((_next, req, res) =>
+            req
+            |> Express.Request.params
+            |> Js.Dict.unsafeGet(_, "path")
+            |> Js.Json.classify
+            |> Express.Response.(
+                 fun
+                 | Js.Json.JSONString(path) => {
+                     Js.log(path);
+                     Pg.Pool.query(
+                       conn,
+                       "SELECT * FROM urls WHERE hash_val == $1",
+                       [|path|],
+                     )
+                     >>= (
+                       (res: Pg.result(url)) => {
+                         Js.log(res##rows);
+                         return(Js.null);
+                       }
+                     );
+                     sendStatus(StatusCode.Ok, res);
+                   }
+                 | _ => sendStatus(StatusCode.NotFound, res)
+               )
+          ),
+          /* let result = Json.Encode.(object_([("status", int(200))]));
+             Express.Response.sendStatus(Ex)
+             Express.Response.sendJson(result, res); */
         )
         |> Express.App.listen(
              ~port=3000,

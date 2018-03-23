@@ -7,7 +7,7 @@ services:
     links:
       - db
     volumes:
-      - '.:/app/'
+      - './src:/app/src'
   cache:
     image: busybox
     volumes:

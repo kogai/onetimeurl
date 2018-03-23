@@ -18,6 +18,6 @@ RUN yarn
 
 COPY . /app
 
-RUN yarn build
+RUN yarn build && cat ./scr/root.bs.js
 
 CMD [ "node", "./src/server.bs.js" ]
